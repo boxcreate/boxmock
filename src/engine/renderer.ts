@@ -71,18 +71,21 @@ export function renderMockup(
     const ox = options.shadowOffsetX;
     const oy = options.shadowOffsetY;
 
-    // Generous buffer calculation ensuring diffused Gaussian falloff never clips on export
-    const shadowReachX = options.showShadow ? Math.max(40, Math.abs(ox) + blur * 1.6 + spread + 40) : 0;
-    const shadowReachY = options.showShadow ? Math.max(40, Math.abs(oy) + blur * 1.6 + spread + 40) : 0;
+    // Directional buffer calculation: top has zero shadow reach when light is overhead (oy >= 0)
+    const isDown = oy >= 0;
+    const shadowReachX = options.showShadow ? Math.max(25, Math.abs(ox) + blur * 1.1 + spread * 1.5 + 20) : 0;
+    const shadowReachTop = options.showShadow ? (isDown ? 8 : Math.max(25, Math.abs(oy) + blur * 1.3 + spread + 25)) : 0;
+    const shadowReachBottom = options.showShadow ? (isDown ? Math.max(30, Math.abs(oy) + blur * 1.4 + spread + 30) : 8) : 0;
 
     const padX = options.padding + shadowReachX;
-    const padY = options.padding + shadowReachY;
+    const padTop = options.padding + shadowReachTop;
+    const padBottom = options.padding + shadowReachBottom;
 
     phoneX = padX + (options.deviceOffsetX || 0);
-    phoneY = padY + (options.deviceOffsetY || 0);
+    phoneY = padTop + (options.deviceOffsetY || 0);
     phoneScale = options.deviceScale || 1.0;
     totalWidth = deviceW + buttonExtraW + padX * 2;
-    totalHeight = deviceH + padY * 2;
+    totalHeight = deviceH + padTop + padBottom;
   }
 
   // Resize canvas according to scale
@@ -238,36 +241,70 @@ function drawRealisticShadow(
     return;
   }
 
-  // Stage 1: Tight Ambient Contact Occlusion (grounds the phone chassis)
+  // DIRECTIONAL STUDIO FLOOR SHADOW:
+  // When oy >= 0 (light source is overhead), shadow projects DOWNWARD onto floor.
+  // The top of the shadow geometry starts below top edge so Gaussian blur NEVER spills above phone (zero halo).
+  const isDownwards = oy >= 0;
+  const topCutoff = isDownwards ? y + Math.max(12, blur * 0.9) : y - blur;
+
+  // Stage 1: Tight Ambient Contact Occlusion (firmly grounds the bottom chassis to floor)
   if (contactWeight > 0) {
     ctx.save();
-    const contactBlur = Math.max(1, Math.min(24, blur * 0.18));
+    const contactBlur = Math.max(1, Math.min(20, blur * 0.16));
     ctx.filter = `blur(${contactBlur}px)`;
-    ctx.fillStyle = `rgba(${sR}, ${sG}, ${sB}, ${opacity * 0.55 * contactWeight})`;
-    ctx.beginPath();
-    ctx.roundRect(x + ox * 0.12, y + Math.max(0, oy * 0.18), w, h, r);
-    ctx.fill();
+    ctx.fillStyle = `rgba(${sR}, ${sG}, ${sB}, ${opacity * 0.65 * contactWeight})`;
+    if (isDownwards) {
+      const cY = y + h - Math.min(140, h * 0.1);
+      const cH = Math.min(150, h * 0.1 + oy * 0.25);
+      ctx.beginPath();
+      ctx.roundRect(x + ox * 0.15, cY + Math.max(0, oy * 0.15), w, cH, [r * 0.4, r * 0.4, r, r]);
+      ctx.fill();
+    } else {
+      ctx.beginPath();
+      ctx.roundRect(x + ox * 0.12, y + oy * 0.18, w, h, r);
+      ctx.fill();
+    }
     ctx.restore();
   }
 
-  // Stage 2: Primary Directional Floor Shadow (body falloff)
+  // Stage 2: Primary Directional Floor Shadow (body falloff projecting downward)
   ctx.save();
-  const midBlur = Math.max(2, blur * 0.75);
+  const midBlur = Math.max(2, blur * 0.7);
   ctx.filter = `blur(${midBlur}px)`;
-  ctx.fillStyle = `rgba(${sR}, ${sG}, ${sB}, ${opacity * 0.38})`;
-  ctx.beginPath();
-  ctx.roundRect(sx + ox * 0.65, sy + oy * 0.75, sw, sh, sr);
-  ctx.fill();
+  ctx.fillStyle = `rgba(${sR}, ${sG}, ${sB}, ${opacity * 0.4})`;
+  if (isDownwards) {
+    const s2Y = Math.max(topCutoff, y + oy * 0.5);
+    const s2H = Math.max(10, h - (s2Y - y) + spread + oy * 0.5);
+    const s2W = Math.max(10, w + spread * 1.4);
+    const s2X = x + ox * 0.6 - (s2W - w) / 2;
+    ctx.beginPath();
+    ctx.roundRect(s2X, s2Y, s2W, s2H, Math.max(8, r));
+    ctx.fill();
+  } else {
+    ctx.beginPath();
+    ctx.roundRect(sx + ox * 0.65, sy + oy * 0.75, sw, sh, sr);
+    ctx.fill();
+  }
   ctx.restore();
 
-  // Stage 3: Soft Atmospheric Diffused Penumbra (broad dispersion)
+  // Stage 3: Soft Atmospheric Floor Dispersion (gentle floor penumbra beneath device)
   ctx.save();
-  const wideBlur = Math.max(4, blur * 1.45);
+  const wideBlur = Math.max(4, blur * 1.35);
   ctx.filter = `blur(${wideBlur}px)`;
-  ctx.fillStyle = `rgba(${sR}, ${sG}, ${sB}, ${opacity * 0.25})`;
-  ctx.beginPath();
-  ctx.roundRect(sx + ox, sy + oy, sw, sh, sr);
-  ctx.fill();
+  ctx.fillStyle = `rgba(${sR}, ${sG}, ${sB}, ${opacity * 0.22})`;
+  if (isDownwards) {
+    const s3Y = Math.max(topCutoff + blur * 0.45, y + h * 0.25 + oy * 0.75);
+    const s3H = Math.max(10, h - (s3Y - y) + spread * 2 + oy * 0.6);
+    const s3W = Math.max(10, w + spread * 2.2);
+    const s3X = x + ox - (s3W - w) / 2;
+    ctx.beginPath();
+    ctx.roundRect(s3X, s3Y, s3W, s3H, Math.max(8, r + spread));
+    ctx.fill();
+  } else {
+    ctx.beginPath();
+    ctx.roundRect(sx + ox, sy + oy, sw, sh, sr);
+    ctx.fill();
+  }
   ctx.restore();
 
   ctx.restore();
