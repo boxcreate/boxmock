@@ -20,7 +20,7 @@ export function renderMockup(
   const buttonExtraW = PIXEL_9_PRO.buttons.power.width; // 4.5px protrusion
 
   const isPreset = options.canvasPreset && options.canvasPreset !== 'freeform';
-  const isPureCutout = !isPreset && options.backgroundType === 'transparent' && (options.tightCrop || !options.showShadow);
+  const isPureCutout = !isPreset && options.backgroundType === 'transparent' && !options.showShadow;
 
   let phoneX = 0;
   let phoneY = 0;

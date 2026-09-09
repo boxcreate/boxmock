@@ -62,7 +62,18 @@ export const ShadowSection: React.FC<ShadowSectionProps> = ({
         label="Enable Ground Shadow"
         tip="Cast a realistic, multi-layered ground shadow beneath the device with zero clipping."
         checked={options.showShadow}
-        onChange={(checked) => update('showShadow', checked)}
+        onChange={(checked) => {
+          if (onOptionsChange) {
+            onOptionsChange({
+              ...options,
+              showShadow: checked,
+              tightCrop: !checked,
+            });
+          } else {
+            update('showShadow', checked);
+            update('tightCrop', !checked);
+          }
+        }}
       />
 
       {options.showShadow && (
