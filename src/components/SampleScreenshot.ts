@@ -1,6 +1,7 @@
 /**
- * Generates an ultra-stylish, fun spatial music player UI screenshot
- * on an in-memory canvas to use as the default sample screenshot for boxmock.
+ * Generates an ultra-clean, minimalist developer & engineering task management UI
+ * (Linear / Raycast / Apple style) with pure typography, razor-sharp 1px geometry,
+ * ZERO fuzzy glows, and ZERO neon gradients.
  */
 export function createSampleScreenshot(): Promise<HTMLImageElement> {
   return new Promise((resolve) => {
@@ -17,362 +18,349 @@ export function createSampleScreenshot(): Promise<HTMLImageElement> {
       return;
     }
 
-    // 1. Deep Space Atmospheric Canvas Background
-    const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
-    bgGrad.addColorStop(0, '#0a0a10');
-    bgGrad.addColorStop(0.35, '#0f0c1b');
-    bgGrad.addColorStop(0.7, '#130c1e');
-    bgGrad.addColorStop(1, '#08080d');
-    ctx.fillStyle = bgGrad;
+    // --- 1. Clean Matte Background (Zero glows, zero color bleed) ---
+    ctx.fillStyle = '#09090b';
     ctx.fillRect(0, 0, width, height);
 
-    // Multi-tone atmospheric aura orbs
-    // Top-left Violet Glow
-    const orb1 = ctx.createRadialGradient(250, 420, 20, 250, 420, 650);
-    orb1.addColorStop(0, 'rgba(147, 51, 234, 0.35)');
-    orb1.addColorStop(0.6, 'rgba(147, 51, 234, 0.08)');
-    orb1.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = orb1;
-    ctx.fillRect(0, 0, width, height);
-
-    // Center-Right Hot Pink Aura
-    const orb2 = ctx.createRadialGradient(880, 950, 30, 880, 950, 750);
-    orb2.addColorStop(0, 'rgba(236, 72, 153, 0.3)');
-    orb2.addColorStop(0.6, 'rgba(236, 72, 153, 0.06)');
-    orb2.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = orb2;
-    ctx.fillRect(0, 0, width, height);
-
-    // Bottom-Left Cyan Ambient Fill
-    const orb3 = ctx.createRadialGradient(220, 1800, 40, 220, 1800, 700);
-    orb3.addColorStop(0, 'rgba(6, 182, 212, 0.25)');
-    orb3.addColorStop(0.7, 'rgba(6, 182, 212, 0.04)');
-    orb3.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = orb3;
-    ctx.fillRect(0, 0, width, height);
-
-    // 2. Status Bar Header
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '600 36px -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('9:41', 75, 95);
-
-    // Minimal Status Icons (Wi-Fi, 5G, Battery)
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-    // 5G label
-    ctx.font = '700 24px -apple-system, sans-serif';
-    ctx.fillText('5G', width - 210, 95);
-    // Battery pill
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.roundRect(width - 145, 68, 56, 30, 8);
-    ctx.stroke();
-    ctx.fillRect(width - 139, 74, 38, 18);
-    ctx.fillRect(width - 86, 77, 4, 12);
-
-    // 3. Top Navigation / Category Header
-    ctx.save();
-    // Glassy "VIBE STATION" pill
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-    ctx.beginPath();
-    ctx.roundRect(75, 175, 280, 68, 34);
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-
-    ctx.fillStyle = '#f43f5e';
-    ctx.beginPath();
-    ctx.arc(115, 209, 8, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = '#f1f5f9';
-    ctx.font = '700 24px -apple-system, sans-serif';
-    ctx.fillText('NOW PLAYING', 140, 217);
-
-    // Right device icon/cast button
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-    ctx.beginPath();
-    ctx.roundRect(width - 145, 175, 70, 68, 24);
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-    // Sound wave icon
-    ctx.fillStyle = '#38bdf8';
-    ctx.fillRect(width - 120, 197, 4, 24);
-    ctx.fillRect(width - 112, 191, 4, 36);
-    ctx.fillRect(width - 104, 202, 4, 14);
-    ctx.restore();
-
-    // 4. Hero Album Artwork Card
-    const artW = 860;
-    const artH = 860;
-    const artX = (width - artW) / 2;
-    const artY = 290;
-    const artR = 56;
-
-    // Album card ground shadow
-    ctx.save();
-    ctx.shadowColor = 'rgba(168, 85, 247, 0.4)';
-    ctx.shadowBlur = 90;
-    ctx.shadowOffsetY = 45;
-    ctx.fillStyle = '#1e1b4b';
-    ctx.beginPath();
-    ctx.roundRect(artX, artY, artW, artH, artR);
-    ctx.fill();
-    ctx.restore();
-
-    // Album Artwork Canvas
-    ctx.save();
-    ctx.beginPath();
-    ctx.roundRect(artX, artY, artW, artH, artR);
-    ctx.clip();
-
-    // Rich Chromatic Swirl Art Background
-    const artGrad = ctx.createLinearGradient(artX, artY, artX + artW, artY + artH);
-    artGrad.addColorStop(0, '#0f172a');
-    artGrad.addColorStop(0.28, '#4c1d95');
-    artGrad.addColorStop(0.62, '#db2777');
-    artGrad.addColorStop(0.85, '#f97316');
-    artGrad.addColorStop(1, '#06b6d4');
-    ctx.fillStyle = artGrad;
-    ctx.fillRect(artX, artY, artW, artH);
-
-    // Floating glowing organic spheres inside album art
-    const artGlow1 = ctx.createRadialGradient(artX + 320, artY + 380, 20, artX + 320, artY + 380, 420);
-    artGlow1.addColorStop(0, 'rgba(244, 114, 182, 0.85)');
-    artGlow1.addColorStop(0.5, 'rgba(168, 85, 247, 0.5)');
-    artGlow1.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = artGlow1;
-    ctx.fillRect(artX, artY, artW, artH);
-
-    const artGlow2 = ctx.createRadialGradient(artX + 620, artY + 580, 10, artX + 620, artY + 580, 360);
-    artGlow2.addColorStop(0, 'rgba(56, 189, 248, 0.9)');
-    artGlow2.addColorStop(0.6, 'rgba(30, 58, 138, 0.4)');
-    artGlow2.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = artGlow2;
-    ctx.fillRect(artX, artY, artW, artH);
-
-    // Holographic Vinyl Rings inside artwork
-    ctx.lineWidth = 3;
-    for (let r = 80; r < 360; r += 45) {
-      ctx.strokeStyle = `rgba(255, 255, 255, ${0.12 + (r / 360) * 0.15})`;
+    // --- Helper Drawing Functions ---
+    const drawRoundRect = (
+      x: number,
+      y: number,
+      w: number,
+      h: number,
+      r: number,
+      fill?: string,
+      stroke?: string,
+      lineWidth = 1
+    ) => {
       ctx.beginPath();
-      ctx.arc(artX + artW / 2, artY + artH / 2, r, 0, Math.PI * 2);
-      ctx.stroke();
-    }
+      ctx.roundRect(x, y, w, h, r);
+      if (fill) {
+        ctx.fillStyle = fill;
+        ctx.fill();
+      }
+      if (stroke) {
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = lineWidth;
+        ctx.stroke();
+      }
+    };
 
-    // Stylized typography on album art
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-    ctx.font = '800 58px -apple-system, sans-serif';
-    ctx.fillText('SOLAR ECHOES', artX + 70, artY + 130);
+    // --- 2. Crisp Vector Status Bar ---
+    ctx.fillStyle = '#f4f4f5';
+    ctx.font = '600 36px -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", sans-serif';
+    ctx.fillText('9:41', 75, 100);
 
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-    ctx.font = '600 24px monospace';
-    ctx.fillText('VOL. 04 // SPATIAL MASTER', artX + 72, artY + 175);
+    // 5G
+    ctx.fillStyle = '#a1a1aa';
+    ctx.font = '600 24px -apple-system, sans-serif';
+    ctx.fillText('5G', width - 210, 98);
 
-    // Floating Glass Reflection Line across Album
-    const glassLine = ctx.createLinearGradient(artX, artY, artX + artW, artY + artH);
-    glassLine.addColorStop(0, 'rgba(255, 255, 255, 0.35)');
-    glassLine.addColorStop(0.2, 'rgba(255, 255, 255, 0.08)');
-    glassLine.addColorStop(0.5, 'rgba(255, 255, 255, 0)');
-    ctx.fillStyle = glassLine;
-    ctx.fillRect(artX, artY, artW, artH);
-
-    // Album border
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    // Battery (crisp vector)
+    ctx.strokeStyle = '#a1a1aa';
     ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.roundRect(artX, artY, artW, artH, artR);
+    ctx.roundRect(width - 145, 76, 56, 28, 7);
     ctx.stroke();
-    ctx.restore();
+    ctx.fillStyle = '#f4f4f5';
+    ctx.fillRect(width - 140, 81, 40, 18);
+    ctx.fillRect(width - 86, 84, 4, 12);
 
-    // 5. Track Title & Artist Info
-    const infoY = 1240;
+    // --- 3. Top Navigation & Workspace Row ---
+    const navY = 175;
 
-    // Song Title
+    // Workspace Selector Pill (Flat matte, hairline border)
+    drawRoundRect(75, navY, 280, 68, 16, '#18181b', '#27272a', 1.5);
+
+    // Organization avatar (monochrome geometric square)
+    drawRoundRect(90, navY + 14, 40, 40, 8, '#27272a');
     ctx.fillStyle = '#ffffff';
-    ctx.font = '800 72px -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('Midnight Mirage', 110, infoY);
-
-    // Artist & Featured
-    ctx.fillStyle = '#cbd5e1';
-    ctx.font = '500 38px -apple-system, sans-serif';
-    ctx.fillText('Kroma • feat. Nova', 110, infoY + 60);
-
-    // Floating Heart Action Button
-    ctx.save();
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-    ctx.beginPath();
-    ctx.roundRect(width - 200, infoY - 45, 90, 90, 45);
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-
-    // Red Heart symbol
-    ctx.fillStyle = '#f43f5e';
-    ctx.font = '48px sans-serif';
+    ctx.font = '700 20px -apple-system, monospace';
     ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('♥', width - 155, infoY);
-    ctx.restore();
+    ctx.fillText('BL', 110, navY + 41);
+    ctx.textAlign = 'left';
 
-    // 6. Dolby Atmos & Lossless Audio Pill
-    const tagY = infoY + 125;
-    ctx.save();
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+    ctx.fillStyle = '#f4f4f5';
+    ctx.font = '600 26px -apple-system, sans-serif';
+    ctx.fillText('boxlore team', 145, navY + 43);
+
+    // Down chevron
+    ctx.strokeStyle = '#71717a';
+    ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.roundRect(110, tagY, 390, 52, 26);
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
-    ctx.lineWidth = 1.5;
+    ctx.moveTo(320, navY + 31);
+    ctx.lineTo(327, navY + 38);
+    ctx.lineTo(334, navY + 31);
     ctx.stroke();
 
-    ctx.fillStyle = '#38bdf8';
-    ctx.font = '700 22px monospace';
-    ctx.fillText('✦ LOSSLESS • 24-BIT/96k', 135, tagY + 33);
-    ctx.restore();
+    // Right Action Icons: Filter & Search (Clean vector line icons)
+    const drawIconButton = (x: number, iconType: 'search' | 'plus') => {
+      drawRoundRect(x, navY, 68, 68, 16, '#18181b', '#27272a', 1.5);
+      ctx.strokeStyle = '#d4d4d8';
+      ctx.lineWidth = 2.5;
+      if (iconType === 'search') {
+        ctx.beginPath();
+        ctx.arc(x + 31, navY + 31, 12, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x + 40, navY + 40);
+        ctx.lineTo(x + 50, navY + 50);
+        ctx.stroke();
+      } else {
+        ctx.beginPath();
+        ctx.moveTo(x + 34, navY + 20);
+        ctx.lineTo(x + 34, navY + 48);
+        ctx.moveTo(x + 20, navY + 34);
+        ctx.lineTo(x + 48, navY + 34);
+        ctx.stroke();
+      }
+    };
 
-    // 7. Interactive Audio Waveform Visualizer
-    const waveY = 1490;
-    const waveW = 860;
-    const waveX = (width - waveW) / 2;
-    const barCount = 38;
-    const barW = 12;
-    const barGap = (waveW - barCount * barW) / (barCount - 1);
+    drawIconButton(width - 143, 'plus');
+    drawIconButton(width - 225, 'search');
 
-    // Pre-calculated wave bar heights for authentic natural music curve
-    const heights = [
-      25, 40, 65, 80, 45, 30, 55, 90, 110, 75, 40, 60, 95, 120, 85, 50, 70, 105, 130, 90,
-      60, 80, 115, 140, 95, 65, 45, 70, 95, 60, 35, 50, 75, 55, 35, 45, 30, 20,
+    // --- 4. Page Title Header ---
+    const titleY = 320;
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '700 56px -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", sans-serif';
+    ctx.fillText('Sprint 42', 75, titleY);
+
+    ctx.fillStyle = '#71717a';
+    ctx.font = '500 26px -apple-system, sans-serif';
+    ctx.fillText('Sep 4 – Sep 18 • 14 tasks remaining', 75, titleY + 46);
+
+    // --- 5. Clean Metrics Overview Grid (3 crisp flat cards) ---
+    const metricsY = 415;
+    const cardGap = 20;
+    const cardW = (width - 150 - 2 * cardGap) / 3;
+    const cardH = 175;
+
+    const metrics = [
+      { label: 'COMPLETED', val: '28', sub: '↑ 8 this week', subColor: '#10b981' },
+      { label: 'IN PROGRESS', val: '12', sub: '3 blocked', subColor: '#f59e0b' },
+      { label: 'VELOCITY', val: '94%', sub: '+4.2 pts', subColor: '#71717a' },
     ];
 
-    const currentProgressIdx = 23; // Bar at which current time stands
+    metrics.forEach((m, i) => {
+      const mx = 75 + i * (cardW + cardGap);
+      drawRoundRect(mx, metricsY, cardW, cardH, 20, '#121215', '#27272a', 1);
 
-    for (let i = 0; i < barCount; i++) {
-      const h = heights[i];
-      const bx = waveX + i * (barW + barGap);
-      const by = waveY - h / 2;
+      ctx.fillStyle = '#71717a';
+      ctx.font = '600 20px -apple-system, monospace';
+      ctx.fillText(m.label, mx + 24, metricsY + 42);
 
-      ctx.save();
-      ctx.beginPath();
-      ctx.roundRect(bx, by, barW, h, 6);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '700 48px -apple-system, BlinkMacSystemFont, sans-serif';
+      ctx.fillText(m.val, mx + 24, metricsY + 104);
 
-      if (i <= currentProgressIdx) {
-        // Played: Vibrant gradient from cyan to magenta
-        const barGrad = ctx.createLinearGradient(0, by, 0, by + h);
-        barGrad.addColorStop(0, '#38bdf8');
-        barGrad.addColorStop(0.5, '#c084fc');
-        barGrad.addColorStop(1, '#f43f5e');
-        ctx.fillStyle = barGrad;
+      ctx.fillStyle = m.subColor;
+      ctx.font = '500 20px -apple-system, sans-serif';
+      ctx.fillText(m.sub, mx + 24, metricsY + 144);
+    });
+
+    // --- 6. Task Status Group / Filter Tabs ---
+    const tabsY = 645;
+    const tabs = ['All Issues', 'Active (12)', 'Backlog', 'Roadmap'];
+    let tabX = 75;
+
+    tabs.forEach((tab, i) => {
+      const isSelected = i === 0;
+      ctx.font = isSelected ? '600 24px -apple-system, sans-serif' : '500 24px -apple-system, sans-serif';
+      const textW = ctx.measureText(tab).width;
+      const pillW = textW + 40;
+
+      drawRoundRect(
+        tabX,
+        tabsY,
+        pillW,
+        56,
+        14,
+        isSelected ? '#ffffff' : '#18181b',
+        isSelected ? undefined : '#27272a',
+        1
+      );
+
+      ctx.fillStyle = isSelected ? '#09090b' : '#a1a1aa';
+      ctx.fillText(tab, tabX + 20, tabsY + 37);
+
+      tabX += pillW + 14;
+    });
+
+    // --- 7. Crisp Linear-Style Issue Cards List ---
+    const issues = [
+      {
+        id: 'BOX-418',
+        title: 'Optimize Canvas 2D frame shadow rasterizer',
+        project: 'boxmock',
+        status: 'in-progress',
+        priority: 'high',
+        author: 'Aswin C.',
+        time: 'Updated 20m ago',
+      },
+      {
+        id: 'BOX-415',
+        title: 'Calibrate realistic titanium edge reflections',
+        project: 'engine',
+        status: 'in-progress',
+        priority: 'urgent',
+        author: 'Aswin C.',
+        time: '1h ago',
+      },
+      {
+        id: 'BOX-409',
+        title: 'Implement lossless 4x PNG and WebP clipboard export',
+        project: 'boxmock',
+        status: 'done',
+        priority: 'medium',
+        author: 'Aswin C.',
+        time: 'Yesterday',
+      },
+      {
+        id: 'BOX-402',
+        title: 'Refactor audio service queue synchronization pipeline',
+        project: 'boxlore-core',
+        status: 'done',
+        priority: 'medium',
+        author: 'Aswin C.',
+        time: 'Sep 7',
+      },
+      {
+        id: 'BOX-396',
+        title: 'Audit SharedPreferences encryption boundaries',
+        project: 'security',
+        status: 'todo',
+        priority: 'low',
+        author: 'Aswin C.',
+        time: 'Sep 5',
+      },
+      {
+        id: 'BOX-391',
+        title: 'Update Material 3 dynamic color tokens for Android 15',
+        project: 'designsystem',
+        status: 'todo',
+        priority: 'low',
+        author: 'Aswin C.',
+        time: 'Sep 4',
+      },
+    ];
+
+    let issueY = 745;
+    const issueH = 185;
+
+    issues.forEach((iss) => {
+      // Card Container: flat matte surface with sharp hairline border
+      drawRoundRect(75, issueY, width - 150, issueH, 20, '#121215', '#27272a', 1);
+
+      // Top row: Issue ID + Project Pill + Priority
+      drawRoundRect(100, issueY + 22, 115, 36, 8, '#18181b', '#27272a', 1);
+      ctx.fillStyle = '#a1a1aa';
+      ctx.font = '600 18px -apple-system, monospace';
+      ctx.fillText(iss.id, 115, issueY + 47);
+
+      // Project tag
+      ctx.fillStyle = '#71717a';
+      ctx.font = '500 20px -apple-system, monospace';
+      ctx.fillText('// ' + iss.project, 230, issueY + 47);
+
+      // Priority indicator (clean icon/dot, no blur)
+      if (iss.priority === 'urgent') {
+        ctx.fillStyle = '#f43f5e';
+        ctx.font = '600 20px -apple-system, sans-serif';
+        ctx.fillText('▲ High', width - 180, issueY + 47);
+      } else if (iss.priority === 'high') {
+        ctx.fillStyle = '#f59e0b';
+        ctx.font = '600 20px -apple-system, sans-serif';
+        ctx.fillText('▲ Medium', width - 195, issueY + 47);
       } else {
-        // Unplayed: Muted slate
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.fillStyle = '#71717a';
+        ctx.font = '500 20px -apple-system, sans-serif';
+        ctx.fillText('— Normal', width - 190, issueY + 47);
       }
-      ctx.fill();
-      ctx.restore();
-    }
 
-    // Time Readouts
-    ctx.fillStyle = '#94a3b8';
-    ctx.font = '600 26px monospace';
-    ctx.fillText('2:41', waveX, waveY + 95);
-    ctx.fillText('-1:37', waveX + waveW - 80, waveY + 95);
+      // Status Icon + Issue Title
+      const titleRowY = issueY + 100;
 
-    // 8. Sleek Modern Playback Controls Dock
-    const ctrlY = 1710;
+      if (iss.status === 'done') {
+        // Crisp checkmark in purple/blue square
+        drawRoundRect(100, titleRowY - 24, 34, 34, 8, '#6366f1');
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(108, titleRowY - 7);
+        ctx.lineTo(114, titleRowY - 1);
+        ctx.lineTo(126, titleRowY - 15);
+        ctx.stroke();
+      } else if (iss.status === 'in-progress') {
+        // Crisp progress circle
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(117, titleRowY - 7, 14, 0, Math.PI * 1.5);
+        ctx.stroke();
+        ctx.strokeStyle = '#27272a';
+        ctx.beginPath();
+        ctx.arc(117, titleRowY - 7, 14, Math.PI * 1.5, Math.PI * 2);
+        ctx.stroke();
+      } else {
+        // Hollow circle
+        ctx.strokeStyle = '#52525b';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(117, titleRowY - 7, 13, 0, Math.PI * 2);
+        ctx.stroke();
+      }
 
-    // Shuffle Button (Active Cyan)
-    ctx.fillStyle = '#38bdf8';
-    ctx.font = '36px sans-serif';
-    ctx.fillText('⇄', 150, ctrlY + 42);
+      // Title Text
+      ctx.fillStyle = '#f4f4f5';
+      ctx.font = '600 28px -apple-system, BlinkMacSystemFont, sans-serif';
+      ctx.fillText(iss.title, 150, titleRowY);
+
+      // Bottom Row: Author + Timestamp
+      ctx.fillStyle = '#71717a';
+      ctx.font = '500 20px -apple-system, sans-serif';
+      ctx.fillText(iss.author + ' • ' + iss.time, 150, issueY + 148);
+
+      issueY += issueH + 16;
+    });
+
+    // --- 8. Floating Minimal Bottom Navigation Bar ---
+    const dockY = height - 210;
+    const dockW = width - 150;
+    const dockH = 110;
+
+    // Solid dark slate dock with crisp 1px border
+    drawRoundRect(75, dockY, dockW, dockH, 55, '#121215', '#27272a', 1.5);
+
+    const tabsNav = [
+      { label: 'Issues', active: true },
+      { label: 'Projects', active: false },
+      { label: 'Inbox', active: false },
+      { label: 'Settings', active: false },
+    ];
+
+    const tabWidth = dockW / tabsNav.length;
+    tabsNav.forEach((t, i) => {
+      const tx = 75 + i * tabWidth;
+
+      if (t.active) {
+        // Crisp active pill
+        drawRoundRect(tx + 24, dockY + 16, tabWidth - 48, 78, 39, '#27272a');
+      }
+
+      ctx.fillStyle = t.active ? '#ffffff' : '#71717a';
+      ctx.font = t.active ? '600 24px -apple-system, sans-serif' : '500 24px -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(t.label, tx + tabWidth / 2, dockY + 63);
+      ctx.textAlign = 'left';
+    });
+
+    // --- 9. Home Gesture Indicator ---
+    ctx.fillStyle = '#71717a';
     ctx.beginPath();
-    ctx.arc(165, ctrlY + 68, 4, 0, Math.PI * 2);
+    ctx.roundRect(width / 2 - 120, height - 36, 240, 6, 3);
     ctx.fill();
 
-    // Previous Track Button
-    ctx.fillStyle = '#f1f5f9';
-    ctx.font = '54px sans-serif';
-    ctx.fillText('⏮', 320, ctrlY + 45);
-
-    // Master Play/Pause Floating Orb
-    const playX = width / 2;
-    const playR = 64;
-
-    ctx.save();
-    ctx.shadowColor = 'rgba(56, 189, 248, 0.5)';
-    ctx.shadowBlur = 45;
-    ctx.shadowOffsetY = 15;
-
-    const playGrad = ctx.createLinearGradient(playX - playR, ctrlY - playR, playX + playR, ctrlY + playR);
-    playGrad.addColorStop(0, '#ffffff');
-    playGrad.addColorStop(1, '#e2e8f0');
-    ctx.fillStyle = playGrad;
-    ctx.beginPath();
-    ctx.arc(playX, ctrlY + 30, playR, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-
-    // Pause bars inside play button
-    ctx.fillStyle = '#0f172a';
-    ctx.beginPath();
-    ctx.roundRect(playX - 18, ctrlY + 7, 10, 46, 5);
-    ctx.roundRect(playX + 8, ctrlY + 7, 10, 46, 5);
-    ctx.fill();
-
-    // Next Track Button
-    ctx.fillStyle = '#f1f5f9';
-    ctx.font = '54px sans-serif';
-    ctx.fillText('⏭', width - 370, ctrlY + 45);
-
-    // Repeat Button
-    ctx.fillStyle = '#94a3b8';
-    ctx.font = '36px sans-serif';
-    ctx.fillText('↻', width - 200, ctrlY + 42);
-
-    // 9. Floating Glassmorphic Lyrics Snippet Card
-    const lyrY = 1880;
-    const lyrH = 290;
-    const lyrW = 860;
-    const lyrX = (width - lyrW) / 2;
-
-    ctx.save();
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-    ctx.beginPath();
-    ctx.roundRect(lyrX, lyrY, lyrW, lyrH, 44);
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-
-    // Header label
-    ctx.fillStyle = '#f43f5e';
-    ctx.font = '700 22px monospace';
-    ctx.fillText('LIVE LYRICS', lyrX + 50, lyrY + 65);
-
-    // Lyric line 1 (Faded)
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-    ctx.font = '600 34px -apple-system, sans-serif';
-    ctx.fillText('Catching echoes in the solar wind...', lyrX + 50, lyrY + 130);
-
-    // Lyric line 2 (Active Vibrant)
-    const lyrGrad = ctx.createLinearGradient(lyrX + 50, lyrY + 160, lyrX + 600, lyrY + 220);
-    lyrGrad.addColorStop(0, '#ffffff');
-    lyrGrad.addColorStop(0.6, '#f472b6');
-    lyrGrad.addColorStop(1, '#38bdf8');
-    ctx.fillStyle = lyrGrad;
-    ctx.font = '700 42px -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('Neon frequencies fade to gold.', lyrX + 50, lyrY + 205);
-    ctx.restore();
-
-    // 10. Bottom Gesture Bar
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-    ctx.beginPath();
-    ctx.roundRect(width / 2 - 140, height - 50, 280, 8, 4);
-    ctx.fill();
-
+    // Convert to Image and resolve
     const img = new Image();
     img.onload = () => resolve(img);
     img.src = canvas.toDataURL('image/png');

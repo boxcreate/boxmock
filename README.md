@@ -11,7 +11,9 @@
 
 ---
 
-![boxmock — Free Online Phone Mockup Creator](public/og-image.png)
+<div align="center">
+  <img src="public/screenshots/studio-view.png" alt="boxmock — Studio View with Ultra-Realistic Pixel 9 Pro Phone Frame" width="100%" />
+</div>
 
 ---
 
@@ -20,6 +22,20 @@
 **boxmock** is a free, open-source online **phone mockup creator** and device frame generator built for mobile developers, UI/UX designers, and indie hackers. It allows you to transform raw app screenshots into publication-ready showcase assets for the **Apple App Store**, **Google Play Store**, **Product Hunt**, pitch decks, and social media.
 
 Unlike traditional mockup tools that lock high-resolution downloads behind paywalls or require heavy 3D software like Blender, **boxmock runs 100% inside your browser using HTML5 Canvas 2D**. Your images never touch an external server.
+
+---
+
+## 📸 Screenshots & Showcase
+
+### 🎛️ Full Control Over Lighting, Finishes, & Shadows
+<div align="center">
+  <img src="public/screenshots/controls-view.png" alt="boxmock Controls & Customization Panel" width="100%" />
+</div>
+
+### 🌑 Studio Dark Environment with Specular Highlights
+<div align="center">
+  <img src="public/screenshots/studio-dark.png" alt="boxmock Dark Studio Mode with Specular Lighting" width="100%" />
+</div>
 
 ---
 
@@ -34,7 +50,7 @@ Unlike traditional mockup tools that lock high-resolution downloads behind paywa
 | **Hardware Accuracy** | **Authentic Pixel 9 Pro** (Bezels, visor, antennas) | Generic / Outdated phone outlines |
 | **Studio Lighting Engine** | **Dynamic Multi-Directional** | Flat / Static gradient overlays |
 | **Elevation & Contact Shadows** | **Multi-layer realistic physics** | Basic single drop shadow |
-| **Export Formats** | **1×, 2×, 3× PNG, WebP, Clipboard** | Low-res only on free tier |
+| **Export Formats** | **1×, 2×, 4× PNG, WebP, JPG, Clipboard** | Low-res only on free tier |
 | **License** | **GNU GPL-3.0 (Open Source)** | Closed-source proprietary |
 
 ---
@@ -59,9 +75,11 @@ Unlike traditional mockup tools that lock high-resolution downloads behind paywa
   - **Porcelain** (Clean ceramic white)
   - **Hazel** (Muted modern sage)
   - **Rose Quartz** (Refined soft blush)
-  - **Mint** (Vibrant pastel green)
+  - **Wintergreen** (Vibrant pastel green)
+  - **Peony** (Energetic warm rose)
   - **Bay Blue** (Calm ocean blue)
-  - **Lemonade** (Energetic warm yellow)
+  - **Natural Titanium** (Industrial metal)
+  - **Champagne Gold** (Warm metallic brass)
 - **Custom Color Picker**: Tint the metallic chassis with any hex code to match your app's brand identity.
 
 ### 🌑 Multi-Layer Elevation Shadows
@@ -78,9 +96,10 @@ Unlike traditional mockup tools that lock high-resolution downloads behind paywa
 - **Custom Dimensions**: Full control over canvas width, height, and scale.
 
 ### ⚡ Zero-Latency Export & Clipboard Integration
-- **Direct 1-Click Copy**: Paste rendered mockups directly into Slack, Figma, Discord, or Notion.
-- **High-Resolution Export**: Download in `1×`, `2×`, or ultra-sharp `3×` resolution.
-- **Lossless PNG & WebP**: Transparent or solid background formats with zero quality loss.
+- **Direct 1-Click Copy**: Paste rendered mockups directly into Slack, Figma, Discord, or Notion (`⌘C`).
+- **Instant Paste**: Paste any screenshot from your clipboard straight onto the phone (`⌘V`).
+- **High-Resolution Export**: Download in `1×`, `2×`, or ultra-sharp `4×` resolution.
+- **Lossless Formats**: PNG, JPG, or WebP with transparent or solid studio backdrops.
 
 ---
 
@@ -147,7 +166,7 @@ Static production files will be bundled into the `dist/` directory.
 Yes, **boxmock** is completely free and open source under the GNU General Public License v3.0. There are no paid tiers, hidden subscriptions, or export watermarks.
 
 ### Can I use exported mockups commercially?
-**Yes.** All images, mockups, and assets you generate or export using boxmock are 100% yours. You are free to use them in commercial applications, client projects, app store graphics, marketing ads, and print materials.
+**Yes.** All images, mockups, and visual assets you generate or export using boxmock are 100% yours. You are free to use them in commercial applications, client projects, app store graphics, marketing ads, and print materials with zero attribution required.
 
 ### Does boxmock store my uploaded screenshots?
 No. Your screenshots remain strictly on your local device. They are rendered directly onto an in-memory HTML5 Canvas and never transmitted across the network.
@@ -161,7 +180,7 @@ Yes! Pull requests are welcomed. If you'd like to contribute new phone frames, t
 
 This project is licensed under the **GNU General Public License v3.0** (GPL-3.0). See the [LICENSE](LICENSE) file for complete details.
 
-Generated mockup outputs exported by users are free of license restrictions and may be used anywhere.
+Generated mockup outputs exported by users are free of license restrictions and may be used anywhere for any personal or commercial purpose.
 
 ---
 
