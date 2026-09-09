@@ -1,17 +1,40 @@
 {
   "name": "boxmock",
   "version": "1.0.0",
-  "description": "Ultra-realistic, browser-based Pixel 9 Pro device mockup generator with studio lighting, physical finishes, and instant export.",
-  "license": "Apache-2.0",
+  "description": "Free online phone mockup creator and ultra-realistic Google Pixel 9 Pro device frame generator with studio lighting, physical finishes, and instant export.",
+  "license": "GPL-3.0-or-later",
   "homepage": "https://aswin.cx/boxmock/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ashwkun/boxmock.git"
+    "url": "https://github.com/boxcreate/boxmock.git"
   },
   "bugs": {
-    "url": "https://github.com/ashwkun/boxmock/issues"
+    "url": "https://github.com/boxcreate/boxmock/issues"
   },
-  "author": "Aswin C.",
+  "author": "Aswin C. / boxcreate",
+  "keywords": [
+    "phone-mockup",
+    "phone-mockup-creator",
+    "free-phone-mockup",
+    "mockup-generator",
+    "device-mockup",
+    "device-frames",
+    "pixel-9-pro",
+    "pixel-mockup",
+    "google-pixel-mockup",
+    "screenshot-mockup",
+    "app-screenshot-maker",
+    "app-store-screenshots",
+    "google-play-screenshots",
+    "product-hunt-assets",
+    "studio-lighting",
+    "canvas-2d",
+    "react-19",
+    "typescript",
+    "tailwind-v4",
+    "client-side",
+    "free-design-tool"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
