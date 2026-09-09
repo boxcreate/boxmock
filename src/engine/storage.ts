@@ -24,7 +24,11 @@ export function loadOptions(defaultOptions: MockupOptions): MockupOptions {
     const raw = localStorage.getItem(OPTIONS_KEY);
     if (!raw) return defaultOptions;
     const parsed = JSON.parse(raw);
-    return { ...defaultOptions, ...parsed, showStatusBar: false, showNavigationPill: false };
+    const loaded = { ...defaultOptions, ...parsed, showStatusBar: false, showNavigationPill: false };
+    if (loaded.backgroundType === 'transparent' && loaded.exportFormat === 'jpeg') {
+      loaded.exportFormat = 'png';
+    }
+    return loaded;
   } catch (err) {
     console.warn('Failed to load options from localStorage:', err);
     return defaultOptions;

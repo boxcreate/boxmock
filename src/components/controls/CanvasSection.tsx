@@ -93,14 +93,18 @@ export const CanvasSection: React.FC<CanvasSectionProps> = ({
               onOptionsChange({
                 ...options,
                 backgroundType: 'transparent',
-                tightCrop: !options.showShadow,
+                tightCrop: true,
+                showShadow: false,
                 padding: 0,
+                canvasPreset: 'freeform',
+                exportFormat: options.exportFormat === 'jpeg' ? 'png' : options.exportFormat,
               });
             } else {
               onOptionsChange({
                 ...options,
                 backgroundType: type,
                 tightCrop: false,
+                showShadow: true,
                 padding: options.padding === 0 ? 50 : options.padding,
               });
             }
@@ -111,18 +115,24 @@ export const CanvasSection: React.FC<CanvasSectionProps> = ({
         {options.backgroundType === 'transparent' && (
           <div className="space-y-2.5 pt-1">
             <ToggleRow
-              label="Tight Frame Crop"
-              tip="Trims away all empty canvas margins, snapping export boundaries directly to the phone chassis."
-              checked={options.tightCrop && !options.showShadow}
+              label="Tight Frame Cutout"
+              tip="Trims away all extra canvas margins and shadows, producing an exact pixel-tight cutout of the phone chassis for clean pasting."
+              checked={options.tightCrop || !options.showShadow}
               onChange={(next) => {
                 onOptionsChange({
                   ...options,
                   tightCrop: next,
-                  showShadow: next ? false : options.showShadow,
-                  padding: next ? 0 : options.padding,
+                  showShadow: next ? false : true,
+                  padding: next ? 0 : 40,
                 });
               }}
             />
+
+            {!options.tightCrop && options.showShadow && (
+              <p className="text-[10px] text-amber-400/90 bg-amber-950/40 border border-amber-800/40 rounded-lg p-2 leading-relaxed">
+                Shadows on transparent exports expand canvas margins. In apps without transparent clipboard support, shadows may paste with a white/grey halo. For direct pasting, keep Tight Frame Cutout enabled.
+              </p>
+            )}
 
             {/* Studio Stage Backdrop Picker */}
             <div className="space-y-1.5 pt-1 border-t border-zinc-800/40">

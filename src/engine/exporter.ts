@@ -13,7 +13,12 @@ export async function exportMockupFile(
 
   renderMockup(offscreen, image, options, scale);
 
-  const format = options.exportFormat || 'png';
+  // When background is transparent, JPEG cannot be used as it does not support alpha (flattening to solid black/white)
+  let format = options.exportFormat || 'png';
+  if (options.backgroundType === 'transparent' && format === 'jpeg') {
+    format = 'png';
+  }
+
   let mimeType = 'image/png';
   let ext = 'png';
   const quality = options.exportQuality || 0.95;

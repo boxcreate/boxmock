@@ -63,19 +63,26 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Format Selector (PNG, JPG, WebP) */}
         <div className="flex items-center bg-zinc-900 p-0.5 rounded-lg border border-zinc-800 text-[11px]">
-          {(['png', 'jpeg', 'webp'] as const).map((fmt) => (
-            <button
-              key={fmt}
-              onClick={() => onOptionsChange({ ...options, exportFormat: fmt as ExportFormat })}
-              className={`px-2 py-1 rounded-md font-mono text-[10px] uppercase font-medium transition-colors cursor-pointer ${
-                options.exportFormat === fmt
-                  ? 'bg-zinc-800 text-zinc-100 shadow-sm'
-                  : 'text-zinc-400 hover:text-zinc-300'
-              }`}
-            >
-              {fmt === 'jpeg' ? 'JPG' : fmt}
-            </button>
-          ))}
+          {(['png', 'jpeg', 'webp'] as const).map((fmt) => {
+            const isJpgDisabled = options.backgroundType === 'transparent' && fmt === 'jpeg';
+            return (
+              <button
+                key={fmt}
+                disabled={isJpgDisabled}
+                onClick={() => onOptionsChange({ ...options, exportFormat: fmt as ExportFormat })}
+                title={isJpgDisabled ? 'JPG does not support transparency (use PNG or WebP)' : undefined}
+                className={`px-2 py-1 rounded-md font-mono text-[10px] uppercase font-medium transition-colors ${
+                  isJpgDisabled
+                    ? 'opacity-30 cursor-not-allowed text-zinc-600'
+                    : options.exportFormat === fmt
+                    ? 'bg-zinc-800 text-zinc-100 shadow-sm cursor-pointer'
+                    : 'text-zinc-400 hover:text-zinc-300 cursor-pointer'
+                }`}
+              >
+                {fmt === 'jpeg' ? 'JPG' : fmt}
+              </button>
+            );
+          })}
         </div>
 
         {/* Resolution Selector */}

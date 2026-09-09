@@ -20,7 +20,7 @@ export function renderMockup(
   const buttonExtraW = PIXEL_9_PRO.buttons.power.width; // 4.5px protrusion
 
   const isPreset = options.canvasPreset && options.canvasPreset !== 'freeform';
-  const isPureCutout = !isPreset && options.backgroundType === 'transparent' && options.tightCrop && !options.showShadow;
+  const isPureCutout = !isPreset && options.backgroundType === 'transparent' && (options.tightCrop || !options.showShadow);
 
   let phoneX = 0;
   let phoneY = 0;
@@ -105,8 +105,8 @@ export function renderMockup(
   ctx.translate(phoneX, phoneY);
   ctx.scale(phoneScale, phoneScale);
 
-  // 2. Draw Multi-Stage Realistic Shadow (with zero-cut guarantees)
-  if (options.showShadow) {
+  // 2. Draw Multi-Stage Realistic Shadow (with zero-cut guarantees, disabled in pure cutout)
+  if (options.showShadow && !isPureCutout) {
     drawRealisticShadow(ctx, 0, 0, deviceW, deviceH, options);
   }
 
