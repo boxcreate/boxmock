@@ -126,7 +126,21 @@ export const CanvasPreview: React.FC<CanvasPreviewProps> = ({
       >
         <canvas
           ref={canvasRef}
-          className="rounded-2xl transition-all"
+          draggable
+          onDragStart={(e) => {
+            if (!canvasRef.current) return;
+            try {
+              const dataUrl = canvasRef.current.toDataURL('image/png');
+              e.dataTransfer.setData(
+                'DownloadURL',
+                `image/png:boxmock-pixel9pro-${options.finish}.png:${dataUrl}`
+              );
+            } catch (err) {
+              console.warn('Drag export failed:', err);
+            }
+          }}
+          className="rounded-2xl transition-all cursor-grab active:cursor-grabbing hover:shadow-2xl"
+          title="Drag directly into Photoshop, Figma, or Desktop"
         />
       </div>
 
