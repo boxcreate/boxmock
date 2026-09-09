@@ -386,14 +386,16 @@ function drawMetalChassis(
     ctx.restore();
   }
 
-  // 4. Polished Outer Rim Mirror Chamfer (Hairline 2px stroke, clipped to stay strictly INSIDE rail)
+  // 4. Polished Outer Rim Mirror Chamfer (Hairline stroke inset 1px so it stays strictly inside rail)
   if (options.lightingScope !== 'flat') {
-    ctx.lineWidth = 2.5; // Outer half is clipped away by chassis boundary!
+    ctx.beginPath();
+    ctx.roundRect(x + 1, y + 1, w - 2, h - 2, Math.max(0, r - 1));
+    ctx.lineWidth = 1.5;
     const rimGrad = ctx.createLinearGradient(x, y, x, y + h);
     rimGrad.addColorStop(0, finish.rimHighlight);
-    rimGrad.addColorStop(0.25, 'rgba(255, 255, 255, 0.3)');
+    rimGrad.addColorStop(0.25, 'rgba(255, 255, 255, 0.25)');
     rimGrad.addColorStop(0.55, 'rgba(0, 0, 0, 0.22)');
-    rimGrad.addColorStop(0.85, 'rgba(255, 255, 255, 0.2)');
+    rimGrad.addColorStop(0.85, 'rgba(255, 255, 255, 0.18)');
     rimGrad.addColorStop(1, finish.rimHighlight);
     ctx.strokeStyle = rimGrad;
     ctx.stroke();
@@ -484,8 +486,8 @@ function drawGlassEdgeRefraction(
   glassRefractGrad.addColorStop(1, 'rgba(255, 255, 255, 0.35)');
 
   ctx.beginPath();
-  ctx.roundRect(sx - 0.5, sy - 0.5, sw + 1, sh + 1, sr + 0.5);
-  ctx.lineWidth = 1.25;
+  ctx.roundRect(sx, sy, sw, sh, sr);
+  ctx.lineWidth = 1.0;
   ctx.strokeStyle = glassRefractGrad;
   ctx.stroke();
 
