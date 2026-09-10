@@ -99,7 +99,72 @@ export const DeviceSection: React.FC<DeviceSectionProps> = ({
 
       <div className="h-px bg-zinc-800/60" />
 
-      {/* 2. Framing & Placement */}
+      {/* 2. Showcase Angle & Orientation */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between text-xs">
+          <div className="flex items-center gap-1">
+            <span className="text-zinc-300 font-medium">Showcase Angle</span>
+            <HelpTip text="Curated presentation tilts for Dribbble, hero headers, and App Store showcases." />
+          </div>
+          {(options.deviceRotation || 0) !== 0 && (
+            <button
+              type="button"
+              onClick={() => update('deviceRotation', 0)}
+              title="Reset angle to 0°"
+              className="text-[10px] text-zinc-400 hover:text-zinc-200 flex items-center gap-1 font-mono transition-colors cursor-pointer px-1.5 py-0.5 rounded hover:bg-zinc-850"
+            >
+              <RotateCcw className="w-2.5 h-2.5" />
+              <span>Reset 0°</span>
+            </button>
+          )}
+        </div>
+
+        {/* Preset Angle Buttons */}
+        <div className="grid grid-cols-3 gap-1.5">
+          {[
+            { label: 'Front', angle: 0, tag: '0°' },
+            { label: 'Hero Left', angle: -12, tag: '-12°' },
+            { label: 'Hero Right', angle: 12, tag: '+12°' },
+            { label: 'Subtle Left', angle: -5, tag: '-5°' },
+            { label: 'Subtle Right', angle: 5, tag: '+5°' },
+            { label: 'Landscape', angle: 90, tag: '90°' },
+          ].map((p) => {
+            const isSelected = (options.deviceRotation || 0) === p.angle;
+            return (
+              <button
+                key={p.label}
+                type="button"
+                onClick={() => update('deviceRotation', p.angle)}
+                className={`flex flex-col items-center justify-center p-2 rounded-lg border text-xs transition-all cursor-pointer select-none ${
+                  isSelected
+                    ? 'bg-zinc-800 border-zinc-500 text-zinc-100 font-semibold shadow-sm ring-1 ring-zinc-500/30'
+                    : 'bg-zinc-900/60 border-zinc-800/80 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700 hover:bg-zinc-850/50'
+                }`}
+              >
+                <span className="truncate leading-tight text-[11px] font-medium">{p.label}</span>
+                <span className="text-[10px] font-mono text-zinc-500 mt-0.5">{p.tag}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Custom Angle Slider */}
+        <SliderControl
+          label="Angle Rotation"
+          tip="Fine-tune device rotation angle (-90° to +90°). Double-click value to reset to 0°."
+          value={options.deviceRotation || 0}
+          min={-90}
+          max={90}
+          step={1}
+          unit="°"
+          defaultValue={0}
+          onChange={(val) => update('deviceRotation', val)}
+        />
+      </div>
+
+      <div className="h-px bg-zinc-800/60" />
+
+      {/* 3. Framing & Placement */}
       <div className="space-y-3">
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-1">

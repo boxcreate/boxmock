@@ -18,12 +18,23 @@ export function renderMockup(
   const deviceW = PIXEL_9_PRO.deviceWidth;
   const deviceH = PIXEL_9_PRO.deviceHeight;
   const buttonExtraW = PIXEL_9_PRO.buttons.power.width; // 4.5px protrusion
+  const fullDevW = deviceW + buttonExtraW;
 
   const isPreset = options.canvasPreset && options.canvasPreset !== 'freeform';
   const isPureCutout = !isPreset && options.backgroundType === 'transparent' && !options.showShadow;
 
-  let phoneX = 0;
-  let phoneY = 0;
+  // Showcase rotation angle & trigonometric calculations
+  const angle = options.deviceRotation || 0;
+  const angleRad = (angle * Math.PI) / 180;
+  const cosA = Math.abs(Math.cos(angleRad));
+  const sinA = Math.abs(Math.sin(angleRad));
+
+  // Rotated bounding box for device chassis
+  const rotW = fullDevW * cosA + deviceH * sinA;
+  const rotH = fullDevW * sinA + deviceH * cosA;
+
+  let phoneCenterX = 0;
+  let phoneCenterY = 0;
   let phoneScale = 1.0;
   let totalWidth = 0;
   let totalHeight = 0;
@@ -34,8 +45,7 @@ export function renderMockup(
     totalHeight = preset.height;
 
     phoneScale = preset.defaultScale * (options.deviceScale || 1.0);
-    const scaledW = deviceW * phoneScale;
-    const scaledH = deviceH * phoneScale;
+    const scaledRotH = rotH * phoneScale;
 
     const anchor = options.deviceAnchor || preset.defaultAnchor;
     const userOx = options.deviceOffsetX || 0;
@@ -43,27 +53,27 @@ export function renderMockup(
 
     if (anchor === 'bottom_bleed') {
       // Bottom Bleed: Anchors phone so bottom cuts off nicely, making screen large and legible
-      phoneX = (totalWidth - scaledW) / 2 + userOx;
-      phoneY = totalHeight - scaledH * 0.74 + userOy;
+      phoneCenterX = totalWidth / 2 + userOx;
+      phoneCenterY = totalHeight - scaledRotH * 0.24 + userOy;
     } else if (anchor === 'right_split') {
-      phoneX = totalWidth * 0.68 - scaledW / 2 + userOx;
-      phoneY = (totalHeight - scaledH) / 2 + userOy;
+      phoneCenterX = totalWidth * 0.68 + userOx;
+      phoneCenterY = totalHeight / 2 + userOy;
     } else if (anchor === 'left_split') {
-      phoneX = totalWidth * 0.32 - scaledW / 2 + userOx;
-      phoneY = (totalHeight - scaledH) / 2 + userOy;
+      phoneCenterX = totalWidth * 0.32 + userOx;
+      phoneCenterY = totalHeight / 2 + userOy;
     } else {
       // center
-      phoneX = (totalWidth - scaledW) / 2 + userOx;
-      phoneY = (totalHeight - scaledH) / 2 + userOy;
+      phoneCenterX = totalWidth / 2 + userOx;
+      phoneCenterY = totalHeight / 2 + userOy;
     }
   } else if (isPureCutout) {
-    // Exact tight phone crop: snaps strictly to phone edges with 4px anti-alias buffer
+    // Exact tight phone crop: snaps strictly to rotated phone edges with 4px anti-alias buffer
     const edgeMargin = 4;
-    phoneX = edgeMargin;
-    phoneY = edgeMargin;
     phoneScale = 1.0;
-    totalWidth = deviceW + buttonExtraW + edgeMargin * 2;
-    totalHeight = deviceH + edgeMargin * 2;
+    totalWidth = Math.round(rotW + edgeMargin * 2);
+    totalHeight = Math.round(rotH + edgeMargin * 2);
+    phoneCenterX = totalWidth / 2;
+    phoneCenterY = totalHeight / 2;
   } else {
     // Freeform: Symmetrical safety buffers ensuring the phone NEVER shifts when adjusting shadow offsets
     const blur = options.shadowBlur;
@@ -73,19 +83,23 @@ export function renderMockup(
 
     // Directional buffer calculation: top has zero shadow reach when light is overhead (oy >= 0)
     const isDown = oy >= 0;
-    const shadowReachX = options.showShadow ? Math.max(25, Math.abs(ox) + blur * 1.1 + spread * 1.5 + 20) : 0;
-    const shadowReachTop = options.showShadow ? (isDown ? 8 : Math.max(25, Math.abs(oy) + blur * 1.3 + spread + 25)) : 0;
-    const shadowReachBottom = options.showShadow ? (isDown ? Math.max(30, Math.abs(oy) + blur * 1.4 + spread + 30) : 8) : 0;
+    const shadowReachX = options.showShadow ? Math.max(30, Math.abs(ox) + blur * 1.2 + spread * 1.5 + 30) : 0;
+    const shadowReachTop = options.showShadow ? (isDown ? 15 : Math.max(30, Math.abs(oy) + blur * 1.3 + spread + 30)) : 0;
+    const shadowReachBottom = options.showShadow ? (isDown ? Math.max(40, Math.abs(oy) + blur * 1.4 + spread + 40) : 15) : 0;
+
+    phoneScale = options.deviceScale || 1.0;
+    const scaledRotW = rotW * phoneScale;
+    const scaledRotH = rotH * phoneScale;
 
     const padX = options.padding + shadowReachX;
     const padTop = options.padding + shadowReachTop;
     const padBottom = options.padding + shadowReachBottom;
 
-    phoneX = padX + (options.deviceOffsetX || 0);
-    phoneY = padTop + (options.deviceOffsetY || 0);
-    phoneScale = options.deviceScale || 1.0;
-    totalWidth = deviceW + buttonExtraW + padX * 2;
-    totalHeight = deviceH + padTop + padBottom;
+    totalWidth = Math.round(scaledRotW + padX * 2);
+    totalHeight = Math.round(scaledRotH + padTop + padBottom);
+
+    phoneCenterX = totalWidth / 2 + (options.deviceOffsetX || 0);
+    phoneCenterY = padTop + scaledRotH / 2 + (options.deviceOffsetY || 0);
   }
 
   // Resize canvas according to scale
@@ -95,6 +109,10 @@ export function renderMockup(
   ctx.save();
   ctx.scale(scale, scale);
 
+  // Set high-quality image smoothing for anti-aliased rotation
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+
   // Clear canvas to 100% transparent alpha
   ctx.clearRect(0, 0, totalWidth, totalHeight);
 
@@ -103,14 +121,29 @@ export function renderMockup(
     drawBackground(ctx, totalWidth, totalHeight, options);
   }
 
-  // Draw Phone with translated/scaled coordinate space
+  // Draw Phone with translated/scaled/rotated coordinate space
   ctx.save();
-  ctx.translate(phoneX, phoneY);
+  ctx.translate(phoneCenterX, phoneCenterY);
   ctx.scale(phoneScale, phoneScale);
+  if (angleRad !== 0) {
+    ctx.rotate(angleRad);
+  }
+  ctx.translate(-deviceW / 2, -deviceH / 2);
 
   // 2. Draw Multi-Stage Realistic Shadow (with zero-cut guarantees, disabled in pure cutout)
   if (options.showShadow && !isPureCutout) {
-    drawRealisticShadow(ctx, 0, 0, deviceW, deviceH, options);
+    // Transform global shadow offsets into local rotated space so shadow always projects downwards relative to canvas floor
+    const ox = options.shadowOffsetX ?? 0;
+    const oy = options.shadowOffsetY ?? 30;
+    const localOx = ox * Math.cos(angleRad) + oy * Math.sin(angleRad);
+    const localOy = -ox * Math.sin(angleRad) + oy * Math.cos(angleRad);
+
+    const shadowOptions = {
+      ...options,
+      shadowOffsetX: localOx,
+      shadowOffsetY: localOy,
+    };
+    drawRealisticShadow(ctx, 0, 0, deviceW, deviceH, shadowOptions);
   }
 
   // 3. Draw Physical Button Silhouettes
