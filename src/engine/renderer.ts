@@ -2,9 +2,11 @@ import type { MockupOptions } from '../types';
 import { PIXEL_9_PRO } from './pixel9pro';
 import { PIXEL_FINISHES, getFinishColors } from './finishes';
 import { CANVAS_PRESETS } from './presets';
+import { renderMockup3D } from './threeEngine';
 
 /**
- * Renders the Pixel 9 Pro mockup onto an HTML5 2D Canvas with photorealistic studio lighting.
+ * Renders the Pixel 9 Pro mockup onto an HTML5 2D Canvas with photorealistic studio lighting,
+ * delegating to the Three.js 3D engine when 3D showcase angles are engaged.
  */
 export function renderMockup(
   canvas: HTMLCanvasElement,
@@ -12,6 +14,13 @@ export function renderMockup(
   options: MockupOptions,
   scale: number = 1
 ) {
+  // Delegate to Three.js WebGL engine when 3D pitch/yaw angles are active
+  const is3D = Boolean((options.rotX && options.rotX !== 0) || (options.rotY && options.rotY !== 0));
+  if (is3D) {
+    renderMockup3D(canvas, image, options, scale);
+    return;
+  }
+
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 

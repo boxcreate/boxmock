@@ -46,6 +46,9 @@ const DEFAULT_OPTIONS: MockupOptions = {
   deviceScale: 1.0,
   deviceOffsetX: 0,
   deviceOffsetY: 0,
+  rotX: 0,
+  rotY: 0,
+  rotZ: 0,
   deviceRotation: 0,
   deviceAnchor: 'center',
   screenshotFit: 'cover',
@@ -127,7 +130,7 @@ export const BoxmockApp: React.FC = () => {
     setHasCustomImage(false);
   }, []);
 
-  // Reset Frame: restores phone anchor, scale, rotation, and X/Y offsets back to pristine center
+  // Reset Frame: restores phone anchor, scale, 3D rotation, and X/Y offsets back to pristine center
   const handleResetFrame = useCallback(() => {
     setOptions((prev) => ({
       ...prev,
@@ -135,6 +138,9 @@ export const BoxmockApp: React.FC = () => {
       deviceScale: 1.0,
       deviceOffsetX: 0,
       deviceOffsetY: 0,
+      rotX: 0,
+      rotY: 0,
+      rotZ: 0,
       deviceRotation: 0,
       screenshotOffsetY: 0,
       screenshotFit: 'cover',

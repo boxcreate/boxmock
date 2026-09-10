@@ -99,18 +99,26 @@ export const DeviceSection: React.FC<DeviceSectionProps> = ({
 
       <div className="h-px bg-zinc-800/60" />
 
-      {/* 2. Showcase Angle & Orientation */}
+      {/* 2. 3D Showcase Angle & Perspective */}
       <div className="space-y-3">
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-1">
-            <span className="text-zinc-300 font-medium">Showcase Angle</span>
-            <HelpTip text="Curated presentation tilts for Dribbble, hero headers, and App Store showcases." />
+            <span className="text-zinc-300 font-medium">3D Showcase Angles</span>
+            <HelpTip text="True 3D perspective orientation revealing polished metallic rails, tactile buttons, camera island, and depth." />
           </div>
-          {(options.deviceRotation || 0) !== 0 && (
+          {((options.rotX || 0) !== 0 || (options.rotY || 0) !== 0 || (options.rotZ || 0) !== 0) && (
             <button
               type="button"
-              onClick={() => update('deviceRotation', 0)}
-              title="Reset angle to 0°"
+              onClick={() => {
+                onOptionsChange({
+                  ...options,
+                  rotX: 0,
+                  rotY: 0,
+                  rotZ: 0,
+                  deviceRotation: 0,
+                });
+              }}
+              title="Reset 3D rotation to straight-on front view"
               className="text-[10px] text-zinc-400 hover:text-zinc-200 flex items-center gap-1 font-mono transition-colors cursor-pointer px-1.5 py-0.5 rounded hover:bg-zinc-850"
             >
               <RotateCcw className="w-2.5 h-2.5" />
@@ -119,22 +127,34 @@ export const DeviceSection: React.FC<DeviceSectionProps> = ({
           )}
         </div>
 
-        {/* Preset Angle Buttons */}
+        {/* 3D Showcase Preset Chips */}
         <div className="grid grid-cols-3 gap-1.5">
           {[
-            { label: 'Front', angle: 0, tag: '0°' },
-            { label: 'Hero Left', angle: -12, tag: '-12°' },
-            { label: 'Hero Right', angle: 12, tag: '+12°' },
-            { label: 'Subtle Left', angle: -5, tag: '-5°' },
-            { label: 'Subtle Right', angle: 5, tag: '+5°' },
-            { label: 'Landscape', angle: 90, tag: '90°' },
+            { label: 'Front', rotX: 0, rotY: 0, rotZ: 0, tag: 'Flat' },
+            { label: 'Persp. Left', rotX: 8, rotY: -20, rotZ: -4, tag: '-20°' },
+            { label: 'Persp. Right', rotX: 8, rotY: 20, rotZ: 4, tag: '+20°' },
+            { label: 'Floating Hero', rotX: 12, rotY: -14, rotZ: -12, tag: 'Hero' },
+            { label: 'Isometric', rotX: 20, rotY: -30, rotZ: 0, tag: 'Iso' },
+            { label: 'Laydown', rotX: 45, rotY: -12, rotZ: 0, tag: 'Desk' },
           ].map((p) => {
-            const isSelected = (options.deviceRotation || 0) === p.angle;
+            const isSelected =
+              (options.rotX || 0) === p.rotX &&
+              (options.rotY || 0) === p.rotY &&
+              (options.rotZ || 0) === p.rotZ;
+
             return (
               <button
                 key={p.label}
                 type="button"
-                onClick={() => update('deviceRotation', p.angle)}
+                onClick={() => {
+                  onOptionsChange({
+                    ...options,
+                    rotX: p.rotX,
+                    rotY: p.rotY,
+                    rotZ: p.rotZ,
+                    deviceRotation: 0,
+                  });
+                }}
                 className={`flex flex-col items-center justify-center p-2 rounded-lg border text-xs transition-all cursor-pointer select-none ${
                   isSelected
                     ? 'bg-zinc-800 border-zinc-500 text-zinc-100 font-semibold shadow-sm ring-1 ring-zinc-500/30'
@@ -148,18 +168,42 @@ export const DeviceSection: React.FC<DeviceSectionProps> = ({
           })}
         </div>
 
-        {/* Custom Angle Slider */}
-        <SliderControl
-          label="Angle Rotation"
-          tip="Fine-tune device rotation angle (-90° to +90°). Double-click value to reset to 0°."
-          value={options.deviceRotation || 0}
-          min={-90}
-          max={90}
-          step={1}
-          unit="°"
-          defaultValue={0}
-          onChange={(val) => update('deviceRotation', val)}
-        />
+        {/* 3D Sliders: Turn (Yaw) & Tilt (Pitch) */}
+        <div className="space-y-2.5 pt-1">
+          <SliderControl
+            label="Turn 3D (Yaw)"
+            tip="Turn the phone left (-) or right (+) in 3D to reveal polished metal side rails and buttons."
+            value={options.rotY || 0}
+            min={-60}
+            max={60}
+            step={1}
+            unit="°"
+            defaultValue={0}
+            onChange={(val) => update('rotY', val)}
+          />
+          <SliderControl
+            label="Tilt 3D (Pitch)"
+            tip="Tilt the phone backwards (-) or forwards (+) in 3D perspective."
+            value={options.rotX || 0}
+            min={-45}
+            max={60}
+            step={1}
+            unit="°"
+            defaultValue={0}
+            onChange={(val) => update('rotX', val)}
+          />
+          <SliderControl
+            label="Slant (Roll)"
+            tip="Slant the device diagonally."
+            value={options.rotZ || 0}
+            min={-45}
+            max={45}
+            step={1}
+            unit="°"
+            defaultValue={0}
+            onChange={(val) => update('rotZ', val)}
+          />
+        </div>
       </div>
 
       <div className="h-px bg-zinc-800/60" />

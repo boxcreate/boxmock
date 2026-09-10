@@ -81,7 +81,11 @@ export interface MockupOptions {
   deviceScale: number; // 0.5 to 1.8 (zoom level inside canvas)
   deviceOffsetX: number; // horizontal placement offset
   deviceOffsetY: number; // vertical placement offset
-  deviceRotation: number; // -90 to +90 degrees tilt/orientation (0 = default straight)
+  // 3D Showcase Rotation
+  rotX: number; // Pitch / tilt (-60° to +60°, default 0)
+  rotY: number; // Yaw / turn (-60° to +60°, default 0)
+  rotZ: number; // Roll / slant (-60° to +60°, default 0)
+  deviceRotation?: number; // legacy 2D rotation alias
   deviceAnchor: DeviceAnchor; // 'center' | 'bottom_bleed' | 'left_split' | 'right_split'
   // Screenshot Fit & Pan
   screenshotFit: ScreenshotFit; // 'cover' | 'contain' | 'fill'
