@@ -128,9 +128,9 @@ export const CanvasSection: React.FC<CanvasSectionProps> = ({
               }}
             />
 
-            {!options.tightCrop && options.showShadow && (
+            {(options.showShadow || !options.tightCrop) && (
               <p className="text-[10px] text-amber-400/90 bg-amber-950/40 border border-amber-800/40 rounded-lg p-2 leading-relaxed">
-                Shadows on transparent exports expand canvas margins. In apps without transparent clipboard support, shadows may paste with a white/grey halo. For direct pasting, keep Tight Frame Cutout enabled.
+                Clipboard copy is disabled while drop shadow is on or tight framing is off to prevent desktop apps (like Photoshop) from flattening transparency into a white halo. Use Export (PNG) to download transparent shadows.
               </p>
             )}
 

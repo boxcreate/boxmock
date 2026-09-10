@@ -2,6 +2,7 @@ import React from 'react';
 import { Download, RotateCcw, Command, Copy, Check } from 'lucide-react';
 import type { MockupOptions, ExportFormat } from '../types';
 import { BoxmockLogo } from './Logo';
+import { Tooltip } from './Tooltip';
 
 interface HeaderProps {
   image: HTMLImageElement | null;
@@ -24,6 +25,21 @@ export const Header: React.FC<HeaderProps> = ({
   copied,
   isExporting,
 }) => {
+  const isCopyDisabled = Boolean(options.showShadow || !options.tightCrop);
+
+  const getCopyDisabledReason = () => {
+    if (options.showShadow && !options.tightCrop) {
+      return 'Clipboard copy is disabled while Drop Shadow is enabled and Tight Framing is off. Desktop apps (like Photoshop) flatten clipboard transparency into a white halo. Please use Export to download the PNG file, or disable Drop Shadow and enable Tight Frame Cutout.';
+    }
+    if (options.showShadow) {
+      return 'Clipboard copy is disabled while Drop Shadow is enabled. Desktop apps (like Photoshop) flatten clipboard shadow transparency into a white halo. Please use Export (PNG) to download, or turn off Drop Shadow.';
+    }
+    if (!options.tightCrop) {
+      return 'Clipboard copy is disabled while Tight Framing is off. Desktop apps (like Photoshop) flatten clipboard transparency into a white halo. Please use Export (PNG) to download, or enable Tight Frame Cutout.';
+    }
+    return '';
+  };
+
   return (
     <header className="h-13 border-b border-zinc-800/80 bg-zinc-950/95 backdrop-blur-md px-4 flex items-center justify-between z-20 shrink-0 select-none">
       {/* Left: Brand */}
@@ -44,8 +60,8 @@ export const Header: React.FC<HeaderProps> = ({
           <kbd className="font-mono text-zinc-200 font-semibold">⌘V</kbd>
           <span>paste</span>
           <span className="text-zinc-600">•</span>
-          <kbd className="font-mono text-zinc-200 font-semibold">⌘C</kbd>
-          <span>copy</span>
+          <kbd className={`font-mono font-semibold ${isCopyDisabled ? 'text-zinc-600' : 'text-zinc-200'}`}>⌘C</kbd>
+          <span className={isCopyDisabled ? 'text-zinc-600' : ''}>copy</span>
         </span>
       </div>
 
@@ -103,14 +119,29 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Copy to Clipboard */}
-        <button
-          onClick={onCopy}
-          title="Copy high-resolution image to clipboard (⌘C)"
-          className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-zinc-300 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 rounded-lg transition-colors cursor-pointer shadow-sm"
-        >
-          {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-zinc-400" />}
-          <span>{copied ? 'Copied!' : 'Copy'}</span>
-        </button>
+        {isCopyDisabled ? (
+          <Tooltip content={getCopyDisabledReason()} className="cursor-not-allowed">
+            <button
+              type="button"
+              disabled
+              tabIndex={-1}
+              aria-disabled="true"
+              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-zinc-500 bg-zinc-900/40 border border-zinc-800/60 rounded-lg opacity-40 shadow-none pointer-events-none select-none"
+            >
+              <Copy className="w-3.5 h-3.5 text-zinc-600" />
+              <span>Copy</span>
+            </button>
+          </Tooltip>
+        ) : (
+          <button
+            onClick={onCopy}
+            title="Copy high-resolution image to clipboard (⌘C)"
+            className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-zinc-300 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 rounded-lg transition-colors cursor-pointer shadow-sm"
+          >
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-zinc-400" />}
+            <span>{copied ? 'Copied!' : 'Copy'}</span>
+          </button>
+        )}
 
         {/* Primary Export Button */}
         <button

@@ -27,7 +27,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     const flip = rect.top < 70;
     setCoords({
       top: flip ? rect.bottom + 6 : rect.top - 6,
-      left: Math.min(window.innerWidth - 130, Math.max(130, rect.left + rect.width / 2)),
+      left: Math.min(window.innerWidth - 160, Math.max(160, rect.left + rect.width / 2)),
       flip,
     });
     setVisible(true);
@@ -45,7 +45,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       onFocus={showTooltip}
       onBlur={hideTooltip}
       className={`inline-flex items-center ${className}`}
-      title={content}
+      aria-label={content}
     >
       {children}
       {visible &&
@@ -60,7 +60,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
               transform: coords.flip ? 'translateX(-50%)' : 'translate(-50%, -100%)',
               zIndex: 99999,
             }}
-            className="pointer-events-none w-60 max-w-xs p-2.5 rounded-lg bg-zinc-900/98 border border-zinc-700 text-[11px] font-normal text-zinc-100 leading-relaxed shadow-2xl backdrop-blur-md select-none text-left tracking-normal normal-case animate-in fade-in duration-100"
+            className="pointer-events-none w-72 max-w-sm p-2.5 rounded-lg bg-zinc-900/98 border border-zinc-700 text-[11px] font-normal text-zinc-100 leading-relaxed shadow-2xl backdrop-blur-md select-none text-left tracking-normal normal-case animate-in fade-in duration-100"
           >
             {content}
           </div>,

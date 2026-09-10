@@ -195,8 +195,11 @@ export const BoxmockApp: React.FC = () => {
     return () => window.removeEventListener('paste', handlePaste);
   }, [handleFileLoad]);
 
-  // Copy mockup handler
+  // Copy mockup handler (disabled when shadow is on or tight framing is off)
+  const isCopyDisabled = Boolean(options.showShadow || !options.tightCrop);
+
   const handleCopy = useCallback(async () => {
+    if (isCopyDisabled) return;
     try {
       await copyMockupToClipboard(image, options);
       setCopied(true);
@@ -204,7 +207,7 @@ export const BoxmockApp: React.FC = () => {
     } catch (err) {
       console.error('Clipboard copy failed:', err);
     }
-  }, [image, options]);
+  }, [image, options, isCopyDisabled]);
 
   // Global copy shortcut (Cmd+C / Ctrl+C)
   useEffect(() => {
@@ -212,6 +215,7 @@ export const BoxmockApp: React.FC = () => {
       if ((e.metaKey || e.ctrlKey) && (e.key === 'c' || e.key === 'C')) {
         const tag = (document.activeElement?.tagName || '').toLowerCase();
         if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+        if (options.showShadow || !options.tightCrop) return;
         e.preventDefault();
         handleCopy();
       }
@@ -219,7 +223,7 @@ export const BoxmockApp: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleCopy]);
+  }, [handleCopy, options.showShadow, options.tightCrop]);
 
   // Trigger export
   const handleExport = async () => {
